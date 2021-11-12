@@ -1,193 +1,141 @@
-import React, { useState } from 'react';
-import { View, KeyboardAvoidingView, Image, TextInput, TouchableOpacity, Text, StyleSheet, Animated } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, {Component} from 'react';
+import { StyleSheet, Text, View, Image, KeyboardAvoidingView, TextInput } from 'react-native';
 
-export default function Login() {
+export default class Login extends Component {
+    constructor(props){
+      super(props);
+      this.state = {
+        email: '',
+        senha: ''
+      }
+    } // Fim do construtor
 
-  return (
-    <KeyboardAvoidingView style={styles.background}>
-      <Image
-        source={require('../../assets/img/fundo-listrado-2.png')}
-        style={StyleSheet.absoluteFillObject}
-      />
+    realizarLogin = async () => {
+      console.warn(this.state.email + '' + this.state.senha)
+      try {
+  
+          const resposta = await api.post('/login', {
+              email: this.state.email,
+              senha: this.state.senha,
+          });
+          const token = resposta.data.token;
 
-      <View style={styles.img}>
+          console.warn(token)
 
-        <Image
-          style={styles.logo}
-          source={require('../../assets/img/Vector.png')}
+          await AsyncStorage.setItem('userToken', token);
+
+          this.props.navigation.navigate('Home')
+  
+      } catch (error) {
+        console.warn(error)
+      }
+    } // Fim do método RealizarLogin
+
+
+  render(){
+    return(
+      <KeyboardAvoidingView style={styles.background}>
+        <Image 
+          source={require('../../assets/img/fundo-listrado-2.png')}
+          style={StyleSheet.absoluteFillObject}
         />
-      </View>
 
-      <View style={styles.containerLogo}>
         <Image
           source={require('../../assets/img/avurto-pretof.png')}
           style={styles.logo}
         />
-      </View>
 
-
-      {/* <View style={styles.img2}>
-         <Image
-         source={require('../../assets/img/Vector.png')}
-         style={styles.logo}
+        <Image
+          source={require('../../assets/img/Vector.png')}
+          style={styles.Imgvector1}
         />
-        </View> */}
 
-      <View style={styles.containerText}>
-        <Text> Faça o Login </Text>
-      </View>
+        <View style={styles.containerText1}>
+        <Text style={{ color: 'rgba(0, 0, 0, 0.7)',fontFamily: 'Mohave-Bold.otf', fontSize: '30px', fontStyle: 'normal', fontWeight: 'bold', lineheight: '42px'}}> FAÇA O LOGIN! </Text>
+        </View>
+        
+        <View style={styles.containerText2}>
+          <Text style={{ color: 'rgba(0, 0, 0, 0.7)', fontFamily: 'Mohave-Bold.otf', fontSize: '15px', fontStyle: 'normal', fontWeight: 'bold'}}> 
+          NÃO PERCA ESSA OPORTURNIDADE, E ENTRE NA AVURTO PARA SABER MAIS SOBRE OS NOSSOS CURSOS! </Text>
+          </View>
+        
 
-      <View style={styles.containerText2}>
-        <Text> Não perca essa oporturnidade, e entre na Avurto pra saber mais sobre nossos cursos! </Text>
-      </View>
+        <Image
+          source={require('../../assets/img/Vector.png')}
+          style={styles.Imgvector2}
+        />
 
-      <View style={styles.containerText3}>
-        <Text> Seu Email </Text>
-      </View>
-
-      <View>
-        <TextInput
+        {/* <TextInput
           style={styles.input}
-          placeholder="Digite o seu Email*"
+          placeholder={'Digite o seu Email'}
           autoCorrect={false}
-          onChangeText={() => { }}
-        />
-      </View>
+          onChangeText={() => {}}
+        /> */}
 
-      <View style={styles.containerText4}>
-        <Text> Sua Senha </Text>
-      </View>
-
-      <View>
-        <TextInput
-          style={styles.input}
-          placeholder="Digite a sua Senha*"
-          autoCorrect={false}
-          onChangeText={() => { }}
+        <Image
+          source={require('../../assets/img/Vector.png')}
+          style={styles.Imgvector3}
         />
 
-        <TouchableOpacity style={styles.btnSubmit}>
-          <Text style={styles.submitText}> Entrar </Text>
-        </TouchableOpacity>
+      </KeyboardAvoidingView>
+    );
+  } // Fim do render
+}
 
-        {/* <TouchableOpacity style={styles.btnEsqueci}>
-          <Text style={styles.esqueciText}>Esqueci Minha Senha</Text>
-        </TouchableOpacity> */}
-
-      </View>
-    </KeyboardAvoidingView>
-  );
-} // Fim da Function Login
-
+// Estilização da página à partir daqui //
 const styles = StyleSheet.create({
-  background: {
-    flex: 3,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#FFF'
-  },
+    background: {
+      flex: 3,
+      backgroundColor: '#fff',
+      alignItens: 'center', 
+      justifyContent: 'center'
+    },
 
-  logo: {
-    width: 175,
-    height: 98
-  },
+    logo: { // Logo da Avurto //
+      flex: 1,
+      position: 'absolute',
+      left: '28.74%',
+      right: '28.99%',
+      top: '0.82%',
+      bottom: '85.87%'
+    },
 
-  img: { // img 1 - vector //
-    position: 'absolute',
-    left: -13.77,
-    right: 72.95,
-    top: 4.62,
-    bottom: 72.55,
-  },
+    Imgvector1: {
+      flex: 1,
+      position: 'absolute',
+      left: '-13.77%',
+      right: '72.95%',
+      top: '4.62%',
+      bottom: '72.55%'
+    },
 
-  containerLogo: { // Logo - Avurto //
-    flex: 1,
-    justifyContent: 'center',
-  },
+    containerText1: { // Faça o login //
+      flex: 1,
+      width: '253px',
+      height: '42px',
+      left: '128px',
+      top: '131px'
+    },
 
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '90%',
-    paddingBottom: 1
-  },
 
-  containerText: { // Título //
-    flex: 1,
-    fontSize: 30,
-    marginTop: '100px',
-    fontWeight: 'Bold',
-    fontFamily: 'Mohave',
-    fontStyle: 'Normal',
-    color: 'rgba(0, 0, 0, 0.7)'
-  },
 
-  containerText2: { // Subtítulo //
-    display : 'flex',
-    fontSize: 15,
-    fontStyle: 'Normal',
-    fontWeight: 'Bold',
-    fontFamily: 'Mohave',
-    color: 'rgba(0, 0, 0, 0.64)'
-  },
+    Imgvector2 : {
+      flex: 1,
+      position: 'absolute',
+      left: '71.5%',
+      right: '-12.32%',
+      top: '17.8%',
+      bottom: '59.38%'
+    },
 
-  containerText3: { // Seu Email //
-    display : 'flex',
-    fontSize: 15,
-    color: '#000000',
-    fontStyle: 'Normal',
-    fontfamily: 'Signika',
-  },
-
-  containerText4: { // Sua Senha //
-    flex: 1,
-    fontSize: 15,
-    color: '#000000',
-    fontStyle: 'Normal',
-    fontfamily: 'Signika',
-  },
-
-  input: {
-    backgroundColor: '#FFF',
-    width: '100%',
-    marginBottom: 50,
-    color: '#222',
-    fontSize: 17,
-    borderRadius: 1,
-    border: '2px solid #05A6F0',
-    padding: 7
-  },
-
-  btnSubmit: {
-    backgroundColor: '#05A6F0',
-    width: 218,
-    height: 37,
-    alignItems: 'center',
-    justifyContent: 'center',
-    border: '2px solid #ffff',
-    borderradius: '20px',
-    boxsizing: 'border-box',
-    borderRadius: 1,
-  },
-
-  submitText: {
-    color: '#FFF',
-    fontfamily: 'Signika',
-    fontstyle: 'normal',
-    fontweight: 'normal',
-    fontSize: 16
-  },
-
-  //   btnEsqueci:{
-  //     marginTop: 10,
-  //   },
-
-  //   esqueciText:{
-  //     color: '#5E9CFF',
-  //     fontstyle: 'italic',
-  //     fontSize: 20,
-  //     textDecorationLine: 'underline',
-  //   },
+    Imgvector3 : {
+      flex: 1,
+      position: 'absolute',
+      left: '37.92%',
+      right: '21.26%',
+      top: '83.83%',
+      bottom: '-6.66%'
+    },
 
 });

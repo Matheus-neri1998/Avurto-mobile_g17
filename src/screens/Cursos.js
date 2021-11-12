@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, Image } from 'react-native';
 export default class Cursos extends Component {
   render (){
       return(
-        <View style = {styles.main}>
+        <View style = {styles.cursos}>
         <Text>Cursos</Text>
         </View>
     );

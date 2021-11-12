@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, Image } from 'react-native';
 export default class Cadastro extends Component {
   render (){
       return(
-        <View style = {styles.main}>
+        <View style = {styles.cadastro}>
         <Text>Cadastro</Text>
         </View>
     );
